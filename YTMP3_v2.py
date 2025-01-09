@@ -50,7 +50,7 @@ while True:
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
-                'preferredquality': config.get('configmp3', 'kbps') if config.get('configmp3', 'kbps') != 'def' else '192',
+                'preferredquality': config.get('configmp3', 'kbps') if config.get('configmp3', 'kbps') != 'def' else '0',
             }]
         }
 
