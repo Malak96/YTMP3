@@ -1,6 +1,6 @@
 import os
 import configparser
-from moviepy.audio.io.AudioFileClip import AudioFileClip
+#from moviepy.audio.io.AudioFileClip import AudioFileClip
 import yt_dlp
 
 config = configparser.ConfigParser()
