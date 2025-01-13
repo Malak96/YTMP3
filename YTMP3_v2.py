@@ -60,7 +60,7 @@ while True:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
             filename_mp3 = filename.replace(info['ext'], 'mp3')
-            print(f'{msg_complete}: {filename_mp3}')
+            print(f'/n {msg_complete}: {filename_mp3}')
 
         os.system("pause > nul")
 
