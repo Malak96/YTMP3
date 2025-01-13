@@ -1,5 +1,5 @@
 @echo off
-title YTMP3 - Actualización Automática
+title YTMP3 - Buscando actualizacion
 
 :: Actualizar el repositorio
 git pull > temp.txt
@@ -15,7 +15,7 @@ if %errorlevel% equ 0 (
 
 :: Eliminar el archivo temporal
 del temp.txt
-
+pause
 :: Actualizar yt_dlp
 python -m pip install -U yt-dlp
 
