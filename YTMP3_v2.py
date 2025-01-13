@@ -47,6 +47,7 @@ while True:
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': os.path.join(dpath, '%(title)s.%(ext)s'),
+            'noplaylist': True,
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
