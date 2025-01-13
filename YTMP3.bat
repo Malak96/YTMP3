@@ -15,7 +15,7 @@ if %errorlevel% equ 0 (
 
 :: Eliminar el archivo temporal
 del temp.txt
-pause
+
 :: Actualizar yt_dlp
 python -m pip install -U yt-dlp
 
