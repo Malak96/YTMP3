@@ -62,6 +62,7 @@ while True:
             filename_mp3 = filename.replace(info['ext'], 'mp3')
             print("")
             print(f"{filename_mp3}")
+            print("")
             print(f'{msg_complete}')
 
         os.system("pause > nul")
