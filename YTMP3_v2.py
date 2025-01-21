@@ -44,15 +44,30 @@ while True:
         clear()
 
         # Configurar opciones para yt_dlp
+        #ydl_opts = {
+        #    'format': 'bestaudio/best',
+        #    'outtmpl': os.path.join(dpath, '%(title)s.%(ext)s'),
+        #    'noplaylist': True,
+        #    'postprocessors': [{
+        #        'key': 'FFmpegExtractAudio',
+        #        'preferredcodec': 'mp3',
+        #        'preferredquality': config.get('configmp3', 'kbps') if config.get('configmp3', 'kbps') != 'def' else '0',
+        #    }]
+        #}
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': os.path.join(dpath, '%(title)s.%(ext)s'),
             'noplaylist': True,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': config.get('configmp3', 'kbps') if config.get('configmp3', 'kbps') != 'def' else '0',
-            }]
+            'writethumbnail': True,  # Descarga la miniatura
+            'postprocessors': [
+                {
+                    'key': 'FFmpegExtractAudio',  # Extrae el audio
+                    'preferredcodec': 'mp3',  # Formato de salida MP3
+                    'preferredquality': config.get('configmp3', 'kbps') if config.get('configmp3', 'kbps') != 'def' else '0',
+                },
+                {'key': 'EmbedThumbnail'},  # Incrusta la miniatura descargada
+                {'key': 'FFmpegMetadata'},  # Incrusta los metadatos (como título, artista, etc.)
+            ],
         }
 
         # Descargar el video/audio
