@@ -110,7 +110,7 @@ echo.
     --audio-quality %kbps% ^
     --no-overwrites ^
     --progress-template "download-title:%(info.id)s-%(progress.eta)s" ^
-    --progress-template "postprocess:Processing %(info.title)s: %(progress.percent|.1f)%%" ^
+    --progress-template "postprocess-title:%(info.id)s-%(progress.eta)s" ^
     --no-playlist ^
     "%URL%"
 set URL=
