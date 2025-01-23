@@ -20,7 +20,7 @@ title YTMP3 Downloader
 set "YT_DLP=yt-dlp.exe"
 set "dpath=descargas"
 set "kbps=0"
-set "msg_complete=."
+set "msg_complete=Se completo la tarea."
 set "msg_error=Ocurrio un error:"
 set SHORTCUT_PATH=%~dp0YTMP3.lnk
 set VBS_SCRIPT=%~dp0vs_lnk.vbs
