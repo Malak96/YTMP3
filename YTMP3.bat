@@ -109,8 +109,7 @@ echo.
     --audio-format mp3 ^
     --audio-quality %kbps% ^
     --no-overwrites ^
-    --progress-template "download:%(info.title)s [%(progress.downloaded_bytes|.1f~MiB)s/%(progress.total_bytes|.1f~MiB)s] %(progress.percent|.1f)%%" ^
-    --progress-template "postprocess:Processing %(info.title)s: %(progress.percent|.1f)%% done" ^
+    --progress-template "download-title:%(info.id)s-%(progress.eta)s" ^
     --no-playlist ^
     "%URL%"
 set URL=
