@@ -57,9 +57,10 @@ if exist "%SHORTCUT_PATH%" (
     echo Creando acceso directo...
     :: Verificar si el script VBScript existe
     if exist "%VBS_SCRIPT%" (
+        echo Ejecutando script VBScript para crear accesos directos...
         cscript //nologo "%VBS_SCRIPT%" "%~dp0%~nx0"
     ) else (
-        echo No se encontro el archivo VBScript.
+        echo No se encontró el archivo VBScript.
     )
 )
 
