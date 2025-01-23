@@ -23,7 +23,7 @@ set "kbps=0"
 set "msg_complete=Se completo la descarga, pulsa una tecla para continuar."
 set "msg_error=Ocurrio un error:"
 set SHORTCUT_PATH=%~dp0YTMP3.lnk
-
+set VBS_SCRIPT=%~dp0vs_lnk.vbs
 :: Verificar dependencias
 :: Verificar si yt-dlp está disponible
 set YT_DLP=yt-dlp.exe
@@ -55,10 +55,8 @@ if exist "%SHORTCUT_PATH%" (
 ) else (
     :: Si el acceso directo no existe, ejecutar el script VBScript
     echo Creando acceso directo...
-    set VBS_SCRIPT=%~dp0lnk.vbs
     :: Verificar si el script VBScript existe
     if exist "%VBS_SCRIPT%" (
-        echo %VBS_SCRIPT%
         cscript //nologo "%VBS_SCRIPT%" "%~dp0%~nx0"
     ) else (
         echo No se encontro el archivo VBScript.
