@@ -100,7 +100,7 @@ if "%URL%"=="" (
 echo Descargando el archivo...
 echo.
 "%YT_DLP%" ^
-    --format bestaudio/best ^
+    --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
     --embed-thumbnail ^
     --add-metadata ^
@@ -108,6 +108,7 @@ echo.
     --extract-audio ^
     --audio-format mp3 ^
     --audio-quality %kbps% ^
+    --no-overwrites ^
     --no-playlist ^
     "%URL%"
 set URL=
