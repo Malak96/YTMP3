@@ -27,6 +27,8 @@ set "msg_error=Ocurrio un error:"
 if not exist "%YT_DLP%" (
     echo El archivo yt-dlp.exe no se encuentra en el directorio. Descargando...
     curl -L -o yt-dlp.exe https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe
+    timeout /t 3 /nobreak > nul
+    start "" "%~f0"
 )
 
 :: Actualizar yt-dlp a la última versión
