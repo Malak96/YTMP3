@@ -58,6 +58,7 @@ if exist "%SHORTCUT_PATH%" (
     set VBS_SCRIPT=%~dp0lnk.vbs
     :: Verificar si el script VBScript existe
     if exist "%VBS_SCRIPT%" (
+        echo %VBS_SCRIPT%
         cscript //nologo "%VBS_SCRIPT%" "%~dp0%~nx0"
     ) else (
         echo No se encontro el archivo VBScript.
