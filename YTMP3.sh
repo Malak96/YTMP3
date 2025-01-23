@@ -23,8 +23,6 @@ DPATH="descargas"
 KBPS=0
 MSG_COMPLETE="Se completó la descarga, pulsa una tecla para continuar."
 MSG_ERROR="Ocurrió un error:"
-SHORTCUT_PATH="./YTMP3.lnk"
-VBS_SCRIPT="./vs_lnk.vbs"
 
 # Verificar dependencias
 # Verificar si yt-dlp está disponible
@@ -48,18 +46,6 @@ if ! command -v ffmpeg &> /dev/null; then
 fi
 
 echo "Todas las dependencias están instaladas correctamente."
-
-# Verificar si el acceso directo ya existe en la carpeta raíz
-if [ -f "$SHORTCUT_PATH" ]; then
-    echo "Acceso directo OK."
-else
-    echo "Creando acceso directo..."
-    if [ -f "$VBS_SCRIPT" ]; then
-        echo "No se soporta la ejecución de scripts VBS en Linux. Ignorando esta parte."
-    else
-        echo "No se encontró el archivo VBScript."
-    fi
-fi
 
 # Actualizar yt-dlp a la última versión
 echo "Buscando actualizaciones para yt-dlp..."
