@@ -51,7 +51,7 @@ echo Todas las dependencias estan instaladas correctamente.
 
 :: Verificar si el acceso directo ya existe en la carpeta raíz
 if exist "%SHORTCUT_PATH%" (
-    echo Acceso directo [OK]
+    echo Acceso directo OK.
 ) else (
     :: Si el acceso directo no existe, ejecutar el script VBScript
     echo Creando acceso directo...
