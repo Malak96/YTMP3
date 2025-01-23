@@ -84,7 +84,6 @@ cls
 echo.
 type banner.txt
 echo.
-echo.
 :: Salir si el usuario ingresa "x"
 if /i "%URL%"=="x" exit /b
 
@@ -98,7 +97,6 @@ if "%URL%"=="" (
 :: Descargar el video/audio 
 :: --postprocessor-args "-id3v2_version 3"
 echo Descargando el archivo...
-echo.
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
