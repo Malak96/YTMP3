@@ -95,7 +95,8 @@ if "%URL%"=="" (
     goto :banner
 )
 
-:: Descargar el video/audio
+:: Descargar el video/audio 
+:: --postprocessor-args "-id3v2_version 3"
 echo Descargando el archivo...
 echo.
 "%YT_DLP%" ^
