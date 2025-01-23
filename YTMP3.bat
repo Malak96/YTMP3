@@ -41,9 +41,8 @@ ffmpeg -version >nul 2>nul
 if %errorlevel% neq 0 (
     echo ffmpeg no esta instalado. Intentando instalarlo...
     winget install ffmpeg
-    echo Reiniciando...
+    echo Cerrando si las dependecias se instalaron correctamente vuelve a ejecutar el programa.
     timeout /t 3 /nobreak > nul
-    start "" "%~f0"
     exit
 )
 
