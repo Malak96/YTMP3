@@ -79,7 +79,7 @@ echo.
 echo.
 echo Ingresa una URL o pesiona Enter para ver las descargas:
 echo.
-set /p "URL=::: "
+set /p "URL=:::"
 cls 
 echo.
 type banner.txt
