@@ -80,10 +80,11 @@ while true; do
     fi
 
     # Descargar el video/audio
+    #--format bestaudio/best \
     echo "Descargando el archivo..."
     echo
     "./$YT_DLP" \
-        --format bestaudio/best \
+        --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" \
         --output "$DPATH/%(title)s.%(ext)s" \
         --embed-thumbnail \
         --add-metadata \
@@ -91,6 +92,7 @@ while true; do
         --extract-audio \
         --audio-format mp3 \
         --audio-quality "$KBPS" \
+        --no-overwrites \
         --no-playlist \
         "$URL"
     URL=""
