@@ -87,7 +87,7 @@ while true; do
         --output "$DPATH/%(title)s.%(ext)s" \
         --embed-thumbnail \
         --add-metadata \
-        --postprocessor-args "-id3v2_version 3" \
+        --ppa "ffmpeg:-id3v2_version 3" \
         --extract-audio \
         --audio-format mp3 \
         --audio-quality "$KBPS" \
