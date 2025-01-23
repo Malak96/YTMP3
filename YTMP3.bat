@@ -22,19 +22,54 @@ set "dpath=descargas"
 set "kbps=0"
 set "msg_complete=Se completo la descarga, pulsa una tecla para continuar."
 set "msg_error=Ocurrio un error:"
+set SHORTCUT_PATH=%~dp0YTMP3.lnk
 
-:: Verificar si el ejecutable yt-dlp existe
+:: Verificar dependencias
+:: Verificar si yt-dlp está disponible
+set YT_DLP=yt-dlp.exe
 if not exist "%YT_DLP%" (
-    echo El archivo yt-dlp.exe no se encuentra en el directorio. Descargando...
+    echo El archivo yt-dlp.exe no se encuentra en el directorio. Intentando descargarlo...
     curl -L -o yt-dlp.exe https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe
+    echo Reiniciando...
     timeout /t 3 /nobreak > nul
     start "" "%~f0"
     exit
 )
 
+:: Verificar si ffmpeg está instalado
+ffmpeg -version >nul 2>nul
+if %errorlevel% neq 0 (
+    echo ffmpeg no esta instalado. Intentando instalarlo...
+    winget install ffmpeg
+    echo Reiniciando...
+    timeout /t 3 /nobreak > nul
+    start "" "%~f0"
+    exit
+)
+
+echo Todas las dependencias estan instaladas correctamente.
+
+
+:: Verificar si el acceso directo ya existe en la carpeta raíz
+if exist "%SHORTCUT_PATH%" (
+    echo Acceso directo [OK]
+) else (
+    :: Si el acceso directo no existe, ejecutar el script VBScript
+    echo Creando acceso directo...
+    set VBS_SCRIPT=%~dp0lnk.vbs
+    :: Verificar si el script VBScript existe
+    if exist "%VBS_SCRIPT%" (
+        cscript //nologo "%VBS_SCRIPT%" "%~dp0%~nx0"
+    ) else (
+        echo No se encontro el archivo VBScript.
+    )
+)
+
+
 :: Actualizar yt-dlp a la última versión
 echo Buscando actualizaciones para yt-dlp...
 "%YT_DLP%" -U
+timeout /t 3 /nobreak > nul
 
 :banner
 cls 
