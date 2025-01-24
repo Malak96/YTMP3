@@ -100,7 +100,7 @@ echo "%URL%" | findstr /i "http:// https://" >nul
 if errorlevel 1 (
     set "URL=ytsearch:%URL%"
     set "JOBS=Buscando ""%URL%""
-    else
+) else (
     set "JOBS=Trabajando, espera..."
 )
 :: Imprine los metadatos
