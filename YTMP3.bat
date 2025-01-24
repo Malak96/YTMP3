@@ -1,9 +1,7 @@
 @echo off
 title YTMP3 - Buscando actualizacion
-
 :: Actualizar el repositorio
 git pull > temp.txt
-
 :: Verificar si hubo cambios
 find "Updating" temp.txt > nul
 if %errorlevel% equ 0 (
@@ -12,14 +10,29 @@ if %errorlevel% equ 0 (
     start "" "%~f0"
     exit
 )
-
 :: Eliminar el archivo temporal
 del temp.txt
 title YTMP3 Downloader
+:: Verificar si existe el archivo config.ini
+if exist "config.ini" (
+    echo Leyendo configuraciones desde config.ini...
+    for /f "tokens=1,2 delims==" %%A in (config.ini) do (
+        if "%%A"=="dpath" set dpath=%%B
+        if "%%A"=="kbps" set kbps=%%B
+        if "%%A"=="format" set format=%%B
+    )
+) else (
+    echo No se encontro config.ini, creando con configuraciones por defecto...
+    echo [config] > config.ini
+    echo dpath=descargas >> config.ini
+    echo kbps=0 >> config.ini
+    echo format=mp3 >> config.ini
+    set "dpath=descargas"
+    set "kbps=0"
+    set "format=mp3"
+)
 :: Configuraciones
 set "YT_DLP=yt-dlp.exe"
-set "dpath=descargas"
-set "kbps=0"
 set "msg_complete=Listo!"
 set "msg_error=Ocurrio un error:"
 set SHORTCUT_PATH=%~dp0YTMP3.lnk
@@ -47,7 +60,6 @@ if %errorlevel% neq 0 (
 )
 
 echo Todas las dependencias estan instaladas correctamente.
-
 
 :: Verificar si el acceso directo ya existe en la carpeta raíz
 if exist "%SHORTCUT_PATH%" (
@@ -105,10 +117,9 @@ if "%URL%"=="" (
     goto :banner
 )
 
-:: Descargar el video/audio 
 :: --postprocessor-args "-id3v2_version 3"
 ::echo Descargando el archivo...
-::Imprine los metadatos
+:: Imprine los metadatos
 :yt-dlp
 echo Trabajando, espera...
 "%YT_DLP%" ^
@@ -125,7 +136,7 @@ echo Trabajando, espera...
     --output "%dpath%\%%(title)s.%%(ext)s" ^
     --ppa "ffmpeg:-id3v2_version 3" ^
     --audio-quality %kbps% ^
-    --audio-format mp3 ^
+    --audio-format %format% ^
     --extract-audio ^
     --embed-thumbnail ^
     --add-metadata ^
@@ -144,4 +155,3 @@ if errorlevel 1 (
 )
 
 goto inicio
-
