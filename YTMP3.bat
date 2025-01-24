@@ -7,6 +7,7 @@ set "msg_error=Ocurrio un error:"
 set SHORTCUT_PATH=%~dp0YTMP3.lnk
 set VBS_SCRIPT=%~dp0vs_lnk.vbs
 set "DEFAULT_CONFIG=config.ini"
+set "JOBS=Trabajando, espera..."
 
 :: Actualizar el repositorio
 git pull > temp.txt
@@ -87,7 +88,6 @@ cls
 echo.
 type banner.txt
 echo.
-echo Trabajando, espera...
 :: Comprobar si el input es una URL válida
 echo "%URL%" | findstr /i "http:// https://" >nul
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
@@ -101,8 +101,11 @@ echo "%URL%" | findstr /i "http:// https://" >nul
 if errorlevel 1 set "URL=ytsearch:%URL%"
 
 :: Imprine los metadatos
-if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
+if exist "%~dp0cookies.txt" (
+    set "COOKIES_ARG=--cookies %~dp0cookies.txt"
 
+)
+echo %JOBS%
 "%YT_DLP%" ^
     --no-warnings ^
     --no-playlist ^
