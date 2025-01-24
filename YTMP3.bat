@@ -1,5 +1,6 @@
 @echo off
 title YTMP3 - Buscando actualizacion
+<<<<<<< HEAD
 :: Configuraciones
 set "YT_DLP=yt-dlp.exe"
 set "msg_complete=Listo!"
@@ -8,6 +9,8 @@ set SHORTCUT_PATH=%~dp0YTMP3.lnk
 set VBS_SCRIPT=%~dp0vs_lnk.vbs
 set "DEFAULT_CONFIG=config.ini"
 
+=======
+>>>>>>> 34df7838e6ab66cb35bed4de721fa4c95d5b5708
 :: Actualizar el repositorio
 git pull > temp.txt
 :: Verificar si hubo cambios
@@ -22,6 +25,7 @@ if %errorlevel% equ 0 (
 del temp.txt
 title YTMP3 Downloader
 :: Verificar si existe el archivo config.ini
+<<<<<<< HEAD
 if not exist "%DEFAULT_CONFIG%" (
     echo Creando archivo config.ini con configuraciones por defecto...
     > "%DEFAULT_CONFIG%" (
@@ -34,6 +38,31 @@ if not exist "%DEFAULT_CONFIG%" (
 for /f "tokens=1,2 delims==" %%A in (%DEFAULT_CONFIG%) do (
     set "%%A=%%B"
 )
+=======
+if exist "config.ini" (
+    echo Leyendo configuraciones desde config.ini...
+    for /f "tokens=1,2 delims==" %%A in (config.ini) do (
+        if "%%A"=="dpath" set dpath=%%B
+        if "%%A"=="kbps" set kbps=%%B
+        if "%%A"=="format" set format=%%B
+    )
+) else (
+    echo No se encontro config.ini, creando con configuraciones por defecto...
+    echo [config] > config.ini
+    (echo dpath=descargas)>> config.ini
+    (echo kbps=0)>> config.ini
+    (echo format=mp3)>> config.ini
+    set "dpath=descargas"
+    set "kbps=0"
+    set "format=mp3"
+)
+:: Configuraciones
+set "YT_DLP=yt-dlp.exe"
+set "msg_complete=Listo!"
+set "msg_error=Ocurrio un error:"
+set SHORTCUT_PATH=%~dp0YTMP3.lnk
+set VBS_SCRIPT=%~dp0vs_lnk.vbs
+>>>>>>> 34df7838e6ab66cb35bed4de721fa4c95d5b5708
 :: Verificar dependencias
 :: Verificar si yt-dlp está disponible
 set YT_DLP=yt-dlp.exe
