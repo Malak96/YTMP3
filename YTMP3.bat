@@ -1,9 +1,15 @@
 @echo off
 title YTMP3 - Buscando actualizacion
+:: Configuraciones
+set "YT_DLP=yt-dlp.exe"
+set "msg_complete=Listo!"
+set "msg_error=Ocurrio un error:"
+set SHORTCUT_PATH=%~dp0YTMP3.lnk
+set VBS_SCRIPT=%~dp0vs_lnk.vbs
+set "DEFAULT_CONFIG=config.ini"
 
 :: Actualizar el repositorio
 git pull > temp.txt
-
 :: Verificar si hubo cambios
 find "Updating" temp.txt > nul
 if %errorlevel% equ 0 (
@@ -12,18 +18,22 @@ if %errorlevel% equ 0 (
     start "" "%~f0"
     exit
 )
-
 :: Eliminar el archivo temporal
 del temp.txt
 title YTMP3 Downloader
-:: Configuraciones
-set "YT_DLP=yt-dlp.exe"
-set "dpath=descargas"
-set "kbps=0"
-set "msg_complete=Se completo la tarea."
-set "msg_error=Ocurrio un error:"
-set SHORTCUT_PATH=%~dp0YTMP3.lnk
-set VBS_SCRIPT=%~dp0vs_lnk.vbs
+:: Verificar si existe el archivo config.ini
+if not exist "%DEFAULT_CONFIG%" (
+    echo Creando archivo config.ini con configuraciones por defecto...
+    > "%DEFAULT_CONFIG%" (
+        echo [config]
+        echo dpath=descargas
+        echo kbps=0
+        echo format=mp3
+    )
+)
+for /f "tokens=1,2 delims==" %%A in (%DEFAULT_CONFIG%) do (
+    set "%%A=%%B"
+)
 :: Verificar dependencias
 :: Verificar si yt-dlp está disponible
 set YT_DLP=yt-dlp.exe
@@ -35,7 +45,6 @@ if not exist "%YT_DLP%" (
     start "" "%~f0"
     exit
 )
-
 :: Verificar si ffmpeg está instalado
 ffmpeg -version >nul 2>nul
 if %errorlevel% neq 0 (
@@ -45,10 +54,7 @@ if %errorlevel% neq 0 (
     timeout /t 3 /nobreak > nul
     exit
 )
-
 echo Todas las dependencias estan instaladas correctamente.
-
-
 :: Verificar si el acceso directo ya existe en la carpeta raíz
 if exist "%SHORTCUT_PATH%" (
     echo Acceso directo OK.
@@ -63,13 +69,10 @@ if exist "%SHORTCUT_PATH%" (
         echo No se encontró el archivo VBScript.
     )
 )
-
-
 :: Actualizar yt-dlp a la última versión
 echo Buscando actualizaciones para yt-dlp...
 "%YT_DLP%" -U
 timeout /t 3 /nobreak > nul
-
 :banner
 cls 
 echo.
@@ -84,9 +87,11 @@ cls
 echo.
 type banner.txt
 echo.
+echo Trabajando, espera...
 :: Salir si el usuario ingresa "x"
 if /i "%URL%"=="x" exit /b
-
+:: Comprobar si el input es una URL válida
+echo "%URL%" | findstr /i "http:// https://" >nul
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
 if "%URL%"=="" (
     if not exist "%dpath%" mkdir "%dpath%"
@@ -94,24 +99,39 @@ if "%URL%"=="" (
     goto :banner
 )
 
-:: Descargar el video/audio 
-:: --postprocessor-args "-id3v2_version 3"
-echo Descargando el archivo...
+echo "%URL%" | findstr /i "http:// https://" >nul
+if errorlevel 1 set "URL=ytsearch:%URL%"
+
+:: Imprine los metadatos
+if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
+
+"%YT_DLP%" ^
+    --no-warnings ^
+    --no-playlist ^
+    --print "Titulo: %%(title)s" ^
+    --print "Artista: %%(artist)s" ^
+    --print "Album: %%(album)s" ^
+    --print "Lanzamiento: %%(release_year)s" ^
+    "%URL%"
+:: Descarga el archivo...  
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
+    --ppa "ffmpeg:-id3v2_version 3" ^
+    --cookies "%~dp0cookies.txt" ^
+    --audio-quality %kbps% ^
+    --audio-format %format% ^
+    --extract-audio ^
     --embed-thumbnail ^
     --add-metadata ^
-    --ppa "ffmpeg:-id3v2_version 3" ^
-    --extract-audio ^
-    --audio-format mp3 ^
-    --audio-quality %kbps% ^
     --no-overwrites ^
-    --quiet ^
     --progress ^
-    --progress-template "postprocess:Procesando: ""%%(info.title)s""" ^
     --no-playlist ^
+    --no-warnings ^
+    -q ^
+    %COOKIES_ARG% ^
     "%URL%"
+
 set URL=
 :: Confirmar descarga completada
 if errorlevel 1 (
@@ -119,6 +139,4 @@ if errorlevel 1 (
 ) else (
     echo %msg_complete%
 )
-
 goto inicio
-
