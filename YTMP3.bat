@@ -118,7 +118,6 @@ if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
     --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
     --ppa "ffmpeg:-id3v2_version 3" ^
-    --cookies "%~dp0cookies.txt" ^
     --audio-quality %kbps% ^
     --audio-format %format% ^
     --extract-audio ^
