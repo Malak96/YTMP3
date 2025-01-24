@@ -20,7 +20,7 @@ title YTMP3 Downloader
 set "YT_DLP=yt-dlp.exe"
 set "dpath=descargas"
 set "kbps=0"
-set "msg_complete=Se completo la tarea."
+set "msg_complete=Listo!"
 set "msg_error=Ocurrio un error:"
 set SHORTCUT_PATH=%~dp0YTMP3.lnk
 set VBS_SCRIPT=%~dp0vs_lnk.vbs
@@ -84,9 +84,19 @@ cls
 echo.
 type banner.txt
 echo.
-echo.
 :: Salir si el usuario ingresa "x"
 if /i "%URL%"=="x" exit /b
+
+:: Comprobar si el input es una URL válida
+echo "%URL%" | findstr /i "http:// https://" >nul
+if not errorlevel 1 (
+    :: Si es una URL válida continuara
+    goto :yt-dlp
+) else (
+    :: Si no es una URL válida, agregar ytsearch: al inicio
+    echo Buscando "%URL%"
+    set "URL=ytsearch:%URL%"
+)
 
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
 if "%URL%"=="" (
@@ -97,19 +107,33 @@ if "%URL%"=="" (
 
 :: Descargar el video/audio 
 :: --postprocessor-args "-id3v2_version 3"
-echo Descargando el archivo...
-echo.
+::echo Descargando el archivo...
+::Imprine los metadatos
+:yt-dlp
+echo Trabajando, espera...
+"%YT_DLP%" ^
+    --no-warnings ^
+    --no-playlist ^
+    --print "Titulo: %%(title)s" ^
+    --print "Artista: %%(artist)s" ^
+    --print "Album: %%(album)s" ^
+    --print "Lanzamiento: %%(release_year)s" ^
+    "%URL%"
+
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
+    --ppa "ffmpeg:-id3v2_version 3" ^
+    --audio-quality %kbps% ^
+    --audio-format mp3 ^
+    --extract-audio ^
     --embed-thumbnail ^
     --add-metadata ^
-    --ppa "ffmpeg:-id3v2_version 3" ^
-    --extract-audio ^
-    --audio-format mp3 ^
-    --audio-quality %kbps% ^
     --no-overwrites ^
+    --progress ^
     --no-playlist ^
+    --no-warnings ^
+    -q ^
     "%URL%"
 set URL=
 :: Confirmar descarga completada
