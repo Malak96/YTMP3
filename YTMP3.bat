@@ -48,7 +48,6 @@ if not exist "%YT_DLP%" (
     start "" "%~f0"
     exit
 )
-
 :: Verificar si ffmpeg está instalado
 ffmpeg -version >nul 2>nul
 if %errorlevel% neq 0 (
@@ -58,9 +57,7 @@ if %errorlevel% neq 0 (
     timeout /t 3 /nobreak > nul
     exit
 )
-
 echo Todas las dependencias estan instaladas correctamente.
-
 :: Verificar si el acceso directo ya existe en la carpeta raíz
 if exist "%SHORTCUT_PATH%" (
     echo Acceso directo OK.
@@ -75,13 +72,10 @@ if exist "%SHORTCUT_PATH%" (
         echo No se encontró el archivo VBScript.
     )
 )
-
-
 :: Actualizar yt-dlp a la última versión
 echo Buscando actualizaciones para yt-dlp...
 "%YT_DLP%" -U
 timeout /t 3 /nobreak > nul
-
 :banner
 cls 
 echo.
@@ -98,7 +92,6 @@ type banner.txt
 echo.
 :: Salir si el usuario ingresa "x"
 if /i "%URL%"=="x" exit /b
-
 :: Comprobar si el input es una URL válida
 echo "%URL%" | findstr /i "http:// https://" >nul
 if not errorlevel 1 (
@@ -109,16 +102,13 @@ if not errorlevel 1 (
     echo Buscando "%URL%"
     set "URL=ytsearch:%URL%"
 )
-
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
 if "%URL%"=="" (
     if not exist "%dpath%" mkdir "%dpath%"
     start "" "%dpath%"
     goto :banner
 )
-
 :: --postprocessor-args "-id3v2_version 3"
-::echo Descargando el archivo...
 :: Imprine los metadatos
 :yt-dlp
 echo Trabajando, espera...
@@ -130,7 +120,7 @@ echo Trabajando, espera...
     --print "Album: %%(album)s" ^
     --print "Lanzamiento: %%(release_year)s" ^
     "%URL%"
-
+:: Descarga el archivo...
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
@@ -153,5 +143,4 @@ if errorlevel 1 (
 ) else (
     echo %msg_complete%
 )
-
 goto inicio
