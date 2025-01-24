@@ -99,7 +99,7 @@ if "%URL%"=="" (
 echo "%URL%" | findstr /i "http:// https://" >nul
 if errorlevel 1 (
     set "URL=ytsearch:%URL%"
-    set "JOBS=Buscando ""%URL%""
+    set "JOBS=Buscando "%URL%""
 ) else (
     set "JOBS=Trabajando, espera..."
 )
