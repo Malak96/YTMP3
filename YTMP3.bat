@@ -88,8 +88,6 @@ echo.
 type banner.txt
 echo.
 echo Trabajando, espera...
-:: Salir si el usuario ingresa "x"
-if /i "%URL%"=="x" goto :end /b
 :: Comprobar si el input es una URL válida
 echo "%URL%" | findstr /i "http:// https://" >nul
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
