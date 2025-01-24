@@ -24,9 +24,9 @@ if exist "config.ini" (
 ) else (
     echo No se encontro config.ini, creando con configuraciones por defecto...
     echo [config] > config.ini
-    echo dpath=descargas >> config.ini
-    echo kbps=0 >> config.ini
-    echo format=mp3 >> config.ini
+    echo dpath=descargas>> config.ini
+    echo kbps=0>> config.ini
+    echo format=mp3>> config.ini
     set "dpath=descargas"
     set "kbps=0"
     set "format=mp3"
