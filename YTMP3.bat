@@ -137,7 +137,7 @@ set URL=
 if errorlevel 1 (
     echo %msg_error%
 ) else (
-    echo .
+    echo.
     echo %msg_complete%
 )
 goto inicio
