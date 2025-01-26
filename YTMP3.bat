@@ -123,9 +123,9 @@ if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
     --no-warnings ^
     -q ^
     --print "before_dl:Titulo: %%(title)s" ^
-    --print "after_dl:Artista: %%(artist)s" ^
-    --print "after_dl:Album: %%(album)s" ^
-    --print "after_dl:Lanzamiento: %%(release_year)s" ^
+    --print "before_dl:Artista: %%(artist)s" ^
+    --print "before_dl:Album: %%(album)s" ^
+    --print "before_dl:Lanzamiento: %%(release_year)s" ^
     %COOKIES_ARG% ^
     "%URL%"
 
