@@ -132,6 +132,7 @@ echo %JOBS%
     --no-warnings ^
     -q ^
     --print "after_move:filepath" ^
+    --print "after_move:Lanzamiento: %%(release_year)s" ^
     %COOKIES_ARG% ^
     "%URL%"
 
