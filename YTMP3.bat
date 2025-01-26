@@ -122,11 +122,12 @@ echo Trabajando, espera...
     "%URL%"
 :: Descarga el archivo...
 "%YT_DLP%" ^
-    --format "bestaudio[ext=m4a]/bestaudio[ext=opus]/bestaudio" ^
+    --format "bestaudio[ext=m4a]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
     --ppa "ffmpeg:-id3v2_version 3" ^
     --audio-quality %kbps% ^
     --audio-format %format% ^
+    --windows-filenames ^
     --extract-audio ^
     --embed-thumbnail ^
     --add-metadata ^
@@ -135,6 +136,7 @@ echo Trabajando, espera...
     --no-playlist ^
     --no-warnings ^
     -q ^
+    --print "after_move:filepath"
     "%URL%"
 set URL=
 :: Confirmar descarga completada
