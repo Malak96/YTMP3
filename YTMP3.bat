@@ -31,9 +31,6 @@ if not exist "%DEFAULT_CONFIG%" (
         echo format=mp3
     )
 )
-for /f "tokens=1,2 delims==" %%A in (%DEFAULT_CONFIG%) do (
-    set "%%A=%%B"
-)
 :: Verificar dependencias
 :: Verificar si yt-dlp está disponible
 set YT_DLP=yt-dlp.exe
@@ -87,6 +84,9 @@ cls
 echo.
 type banner.txt
 echo.
+for /f "tokens=1,2 delims==" %%A in (%DEFAULT_CONFIG%) do (
+    set "%%A=%%B"
+)
 :: Comprobar si el input es una URL válida
 echo "%URL%" | findstr /i "http:// https://" >nul
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
