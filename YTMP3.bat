@@ -122,11 +122,10 @@ if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
     --no-playlist ^
     --no-warnings ^
     -q ^
-    --print "before_move:Titulo: %%(title)s" ^
-    --print "after_move:Artista: %%(artist)s" ^
-    --print "after_move:Album: %%(album)s" ^
-    --print "after_move:Lanzamiento: %%(release_year)s" ^
-    --print "after_move:filepath" ^
+    --print "before_dl:Titulo: %%(title)s" ^
+    --print "after_dl:Artista: %%(artist)s" ^
+    --print "after_dl:Album: %%(album)s" ^
+    --print "after_dl:Lanzamiento: %%(release_year)s" ^
     %COOKIES_ARG% ^
     "%URL%"
 
