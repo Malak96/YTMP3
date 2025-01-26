@@ -128,7 +128,7 @@ echo %JOBS%
     --print "before_dl:Album: %%(album)s" ^
     --print "before_dl:Lanzamiento: %%(release_year)s" ^
     --print "before_dl:>>" ^
-    --print "after_dl:Procesando archivo.." ^
+    --print "before_dl:Procesando archivo.." ^
     %COOKIES_ARG% ^
     "%URL%"
 
