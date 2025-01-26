@@ -106,15 +106,6 @@ if errorlevel 1 (
 :: Imprine los metadatos
 if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
 
-echo %JOBS%
-"%YT_DLP%" ^
-    --no-warnings ^
-    --no-playlist ^
-    --print "Titulo: %%(title)s" ^
-    --print "Artista: %%(artist)s" ^
-    --print "Album: %%(album)s" ^
-    --print "Lanzamiento: %%(release_year)s" ^
-    "%URL%"
 :: Descarga el archivo...  
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio" ^
@@ -131,8 +122,11 @@ echo %JOBS%
     --no-playlist ^
     --no-warnings ^
     -q ^
-    --print "after_move:filepath" ^
+    --print "before_move:Titulo: %%(title)s" ^
+    --print "after_move:Artista: %%(artist)s" ^
+    --print "after_move:Album: %%(album)s" ^
     --print "after_move:Lanzamiento: %%(release_year)s" ^
+    --print "after_move:filepath" ^
     %COOKIES_ARG% ^
     "%URL%"
 
