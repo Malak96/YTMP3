@@ -1,5 +1,13 @@
 @echo off
 title YTMP3 - Buscando actualizacion
+:: Configuraciones
+set "YT_DLP=yt-dlp.exe"
+set "msg_complete=Listo!"
+set "msg_error=Ocurrio un error:"
+set SHORTCUT_PATH=%~dp0YTMP3.lnk
+set VBS_SCRIPT=%~dp0vs_lnk.vbs
+set "DEFAULT_CONFIG=config.ini"
+
 :: Actualizar el repositorio
 git pull > temp.txt
 :: Verificar si hubo cambios
@@ -14,29 +22,18 @@ if %errorlevel% equ 0 (
 del temp.txt
 title YTMP3 Downloader
 :: Verificar si existe el archivo config.ini
-if exist "config.ini" (
-    echo Leyendo configuraciones desde config.ini...
-    for /f "tokens=1,2 delims==" %%A in (config.ini) do (
-        if "%%A"=="dpath" set dpath=%%B
-        if "%%A"=="kbps" set kbps=%%B
-        if "%%A"=="format" set format=%%B
+if not exist "%DEFAULT_CONFIG%" (
+    echo Creando archivo config.ini con configuraciones por defecto...
+    > "%DEFAULT_CONFIG%" (
+        echo [config]
+        echo dpath=descargas
+        echo kbps=0
+        echo format=mp3
     )
-) else (
-    echo No se encontro config.ini, creando con configuraciones por defecto...
-    echo [config] > config.ini
-    (echo dpath=descargas)>> config.ini
-    (echo kbps=0)>> config.ini
-    (echo format=mp3)>> config.ini
-    set "dpath=descargas"
-    set "kbps=0"
-    set "format=mp3"
 )
-:: Configuraciones
-set "YT_DLP=yt-dlp.exe"
-set "msg_complete=Listo!"
-set "msg_error=Ocurrio un error:"
-set SHORTCUT_PATH=%~dp0YTMP3.lnk
-set VBS_SCRIPT=%~dp0vs_lnk.vbs
+for /f "tokens=1,2 delims==" %%A in (%DEFAULT_CONFIG%) do (
+    set "%%A=%%B"
+)
 :: Verificar dependencias
 :: Verificar si yt-dlp está disponible
 set YT_DLP=yt-dlp.exe
@@ -90,28 +87,26 @@ cls
 echo.
 type banner.txt
 echo.
-:: Salir si el usuario ingresa "x"
-if /i "%URL%"=="x" exit /b
 :: Comprobar si el input es una URL válida
 echo "%URL%" | findstr /i "http:// https://" >nul
-if not errorlevel 1 (
-    :: Si es una URL válida continuara
-    goto :yt-dlp
-) else (
-    :: Si no es una URL válida, agregar ytsearch: al inicio
-    echo Buscando "%URL%"
-    set "URL=ytsearch:%URL%"
-)
 :: Abrir carpeta de descargas si el usuario deja el campo vacío
 if "%URL%"=="" (
     if not exist "%dpath%" mkdir "%dpath%"
     start "" "%dpath%"
     goto :banner
 )
-:: --postprocessor-args "-id3v2_version 3"
+
+echo "%URL%" | findstr /i "http:// https://" >nul
+if errorlevel 1 (
+    set "URL=ytsearch:%URL%"
+    set "JOBS=Buscando "%URL%""
+) else (
+    set "JOBS=Trabajando, espera..."
+)
 :: Imprine los metadatos
-:yt-dlp
-echo Trabajando, espera...
+if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
+
+echo %JOBS%
 "%YT_DLP%" ^
     --no-warnings ^
     --no-playlist ^
@@ -120,7 +115,7 @@ echo Trabajando, espera...
     --print "Album: %%(album)s" ^
     --print "Lanzamiento: %%(release_year)s" ^
     "%URL%"
-:: Descarga el archivo...
+:: Descarga el archivo...  
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio" ^
     --output "%dpath%\%%(title)s.%%(ext)s" ^
@@ -136,8 +131,10 @@ echo Trabajando, espera...
     --no-playlist ^
     --no-warnings ^
     -q ^
-    --print "after_move:filepath"
+    --print "after_move:filepath" ^
+    %COOKIES_ARG% ^
     "%URL%"
+
 set URL=
 :: Confirmar descarga completada
 if errorlevel 1 (
@@ -146,3 +143,4 @@ if errorlevel 1 (
     echo %msg_complete%
 )
 goto inicio
+:end
