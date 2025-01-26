@@ -101,11 +101,11 @@ if errorlevel 1 (
     set "URL=ytsearch:%URL%"
     set "JOBS=Buscando "%URL%""
 ) else (
-    set "JOBS=Trabajando, espera..."
+    set "JOBS=Analizando URL, espera..."
 )
 :: Imprine los metadatos
 if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
-
+echo %JOBS%
 :: Descarga el archivo...  
 "%YT_DLP%" ^
     --format "bestaudio[ext=m4a]/bestaudio" ^
@@ -122,10 +122,12 @@ if exist "%~dp0cookies.txt" set "COOKIES_ARG=--cookies %~dp0cookies.txt"
     --no-playlist ^
     --no-warnings ^
     -q ^
+    --print "before_dl:>>" ^
     --print "before_dl:Titulo: %%(title)s" ^
     --print "before_dl:Artista: %%(artist)s" ^
     --print "before_dl:Album: %%(album)s" ^
     --print "before_dl:Lanzamiento: %%(release_year)s" ^
+    --print "before_dl:>>" ^
     %COOKIES_ARG% ^
     "%URL%"
 
